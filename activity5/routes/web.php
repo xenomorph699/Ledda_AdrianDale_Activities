@@ -1,26 +1,22 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SignInController;
+use App\Http\Controllers\SignUpController;
 use Illuminate\Support\Facades\Route;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('Auth.login');
+})->name('Auth.login');
 
-Auth::routes();
+Route::get('/signup', function () {
+    return view('Auth.signup');
+})->name('signup');
 
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
-Route::get('/registration', 'RegistrationController@index')->name('registration');
+Route::post('/create', [SignUpController::class, 'create'])->name('register');
 
-Auth::routes();
+Route::get('/login', [SignInController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [SignInController::class, 'login']);
+Route::post('/logout', [SignInController::class, 'logout'])->name('logout');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
